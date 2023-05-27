@@ -3,7 +3,7 @@ A simple ToDo API in PHP.
 
 ## Requirements
 - PHP 7+
-- MySQL/MariaDB database server
+- MySQL 5.x or MariaDB 10.x database server
 
 ## Usage
 1. Create a MySQL database, a table, and populate it with data:
@@ -39,13 +39,48 @@ A simple ToDo API in PHP.
 
 ### API endpoints
 
-1. `/create` Create a new ToDo item
+1. `POST /api/create` Create a new ToDo item
 
-2. `/read.php` Get all todos
+    ```shell
+    curl --request POST 'http://localhost:3000/api/create.php' \
+    --header 'Content-Type: application/json' \
+    --data '{
+        "task": "Workout"
+    }'
+    ```
 
-3. `/update` Update a ToDo item by its id
+2. `GET /api/readAll.php` Get all Todos
 
-4. `/delete` Delete a ToDo item by its id
+    ```shell
+    curl 'http://localhost:3000/api/readAll.php'
+    ```
+
+3. `GET /api/readOne.php` Get a single Todo item
+
+    ```shell
+    curl 'http://localhost:3000/api/readOne.php?id=1'
+    ```
+
+4. `PUT /api/update` Update a ToDo item by its id
+
+    ```shell
+    curl --request PUT 'http://localhost:3000/api/update.php' \
+    --header 'Content-Type: application/json' \
+    --data '{
+        "id": 1,
+        "done": true
+    }'
+    ```
+
+5. `DELETE /api/delete` Delete a ToDo item by its id
+
+    ```shell
+    curl --request DELETE 'http://localhost:3000/api/delete.php' \
+    --header 'Content-Type: application/json' \
+    --data '{
+        "id": 1
+    }'
+    ```
 
 ### License
 MIT

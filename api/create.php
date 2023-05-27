@@ -1,4 +1,11 @@
 <?php
+// Check Request Method
+if ($_SERVER['REQUEST_METHOD'] != 'POST') {
+    header('Allow: POST');
+    http_response_code(405);
+    echo json_encode('Method Not Allowed');
+    return;
+}
 // Headers
 header('Access-Control-Allow-Origin: *');
 header('Content-Type: application/json');

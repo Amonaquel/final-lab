@@ -31,6 +31,8 @@ A simple ToDo API in PHP.
     DB_USERNAME=root
     DB_PASSWORD=changeme
     ```
+
+    For example to set a new environment variable called _DB_USERNAME_ with the value _root_, on windows run `$env:DB_USERNAME='root'` while on macOs and Linux run `export DB_USERNAME='root'`
 3. Run the API server:
     ```shell
     php -S localhost:3000

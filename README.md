@@ -55,7 +55,7 @@ A simple ToDo API in PHP.
     
 3. Run the API server:
     ```shell
-    php -S localhost:3000
+     php -c C:\php\php.ini-development -S localhost:3000
     ```
 4. Send an HTTP request to the API endpoints listed below
 

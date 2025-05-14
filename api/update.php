@@ -13,35 +13,36 @@ header('Content-Type: application/json');
 header('Access-Control-Allow-Methods: PUT');
 
 include_once '../db/Database.php';
-include_once '../models/Todo.php';
+include_once '../models/Bookmark.php';
 
 // Instantiate a Database object & connect
 $database = new Database();
 $dbConnection = $database->connect();
 
-// Instantiate Todo object
-$todo = new Todo($dbConnection);
+// Instantiate Bookmark object
+$bookmark = new Bookmark($dbConnection);
 
 // Get the HTTP PUT request JSON body
 $data = json_decode(file_get_contents("php://input"));
-if (!$data || !$data->id || !$data->done) {
+if (!$data || !$data->id || !$data->title || !$data->link) {
     http_response_code(422);
     echo json_encode(
-        array('message' => 'Error: Missing required parameters id and done in the JSON body.')
+        array('message' => 'Error: Missing required parameters id, title, and link in the JSON body.')
     );
     return;
 }
 
-$todo->setId($data->id);
-$todo->setDone($data->done);
+$bookmark->setId($data->id);
+$bookmark->setTitle($data->title);
+$bookmark->setLink($data->link);
 
-// Update the ToDo item
-if ($todo->update()) {
+// Update the Bookmark
+if ($bookmark->update()) {
     echo json_encode(
-        array('message' => 'A todo item was updated.')
+        array('message' => 'A bookmark was updated.')
     );
 } else {
     echo json_encode(
-        array('message' => 'Error: a todo item was not updated.')
+        array('message' => 'Error: a bookmark was not updated.')
     );
 }

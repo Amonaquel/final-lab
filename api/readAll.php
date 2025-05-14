@@ -12,23 +12,21 @@ header('Content-Type: application/json');
 header('Access-Control-Allow-Methods: GET');
 
 include_once '../db/Database.php';
-include_once '../models/Todo.php';
+include_once '../models/Bookmark.php';
 
 // Instantiate a Database object & connect
 $database = new Database();
 $dbConnection = $database->connect();
 
-// Instantiate Todo object
-$todo = new Todo($dbConnection);
+// Instantiate Bookmark object
+$bookmark = new Bookmark($dbConnection);
 
-
-
-// Read all ToDo items
-$result = $todo->readAll();
-if (! empty($result)) {
+// Read all Bookmark items
+$result = $bookmark->readAll();
+if (!empty($result)) {
     echo json_encode($result);
 } else {
     echo json_encode(
-        array('message' => 'No todo items were found')
+        array('message' => 'No bookmarks were found')
     );
 }

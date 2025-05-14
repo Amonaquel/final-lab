@@ -13,14 +13,14 @@ header('Content-Type: application/json');
 header('Access-Control-Allow-Methods: GET');
 
 include_once '../db/Database.php';
-include_once '../models/Todo.php';
+include_once '../models/Bookmark.php';
 
 // Instantiate a Database object & connect
 $database = new Database();
 $dbConnection = $database->connect();
 
-// Instantiate Todo object
-$todo = new Todo($dbConnection);
+// Instantiate Bookmark object
+$bookmark = new Bookmark($dbConnection);
 
 // Get the HTTP GET request query parameter (e.g., ?id=123)
 if (!isset($_GET['id'])) {
@@ -31,20 +31,20 @@ if (!isset($_GET['id'])) {
     return;
 }
 
-$todo->setId($_GET['id']);
+$bookmark->setId($_GET['id']);
 
-// Read ToDo
-if ($todo->readOne()) {
+// Read Bookmark
+if ($bookmark->readOne()) {
     $result =  array(
-        'id' => $todo->getId(),
-        'task' => $todo->getTask(),
-        'dateAdded' => $todo->getDateAdded(),
-        'done' => $todo->getDone()
+        'id' => $bookmark->getId(),
+        'title' => $bookmark->getTitle(),
+        'link' => $bookmark->getLink(),
+        'dateAdded' => $bookmark->getDateAdded()
     );
     echo json_encode($result);
 } else {
     http_response_code(404);
     echo json_encode(
-        array('message' => 'Error: No todo item was found')
+        array('message' => 'Error: No bookmark was found')
     );
 }

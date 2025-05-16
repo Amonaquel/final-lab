@@ -1,32 +1,43 @@
 <?php
-// Check Request Method
-if ($_SERVER['REQUEST_METHOD'] != 'GET') {
-    header('Allow: GET');
-    http_response_code(405);
-    echo json_encode('Method Not Allowed');
-    return;
-}
 // Headers
 header('Access-Control-Allow-Origin: *');
 header('Content-Type: application/json');
-header('Access-Control-Allow-Methods: GET');
+header('Access-Control-Allow-Methods: GET, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With');
 
-include_once '../db/Database.php';
-include_once '../models/Bookmark.php';
+// Handle preflight OPTIONS request
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit();
+}
 
-// Instantiate a Database object & connect
-$database = new Database();
-$dbConnection = $database->connect();
+// Check Request Method
+if ($_SERVER['REQUEST_METHOD'] != 'GET') {
+    http_response_code(405);
+    echo json_encode(['error' => 'Method Not Allowed']);
+    exit();
+}
 
-// Instantiate Bookmark object
-$bookmark = new Bookmark($dbConnection);
+try {
+    include_once '../db/Database.php';
+    include_once '../models/Bookmark.php';
 
-// Read all Bookmark items
-$result = $bookmark->readAll();
-if (!empty($result)) {
-    echo json_encode($result);
-} else {
-    echo json_encode(
-        array('message' => 'No bookmarks were found')
-    );
+    // Instantiate a Database object & connect
+    $database = new Database();
+    $dbConnection = $database->connect();
+
+    // Instantiate Bookmark object
+    $bookmark = new Bookmark($dbConnection);
+
+    // Read all Bookmark items
+    $result = $bookmark->readAll();
+    
+    if (!empty($result)) {
+        echo json_encode($result);
+    } else {
+        echo json_encode(['message' => 'No bookmarks were found']);
+    }
+} catch (Exception $e) {
+    http_response_code(500);
+    echo json_encode(['error' => $e->getMessage()]);
 }
